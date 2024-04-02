@@ -1,0 +1,40 @@
+<!-- Include Radiant Media Player - here we use the optimised build for Shaka player -->
+<script src="https://cdn.radiantmediatechs.com/rmp/9.15.0/js/rmp-shaka.min.js"></script>
+<script src="https://cdn.radiantmediatechs.com/rmp/9.15.0/js/rmp.min.js"></script>
+<script src="https://cdn.radiantmediatechs.com/rmp/9.15.0/js/rmp-hlsjs.min.js"></script>
+<script src="https://cdn.radiantmediatechs.com/rmp/9.15.0/js/rmp-vttjs.min.js"></script>
+<!-- Player container element -->
+<div id="rmp"></div>
+<!-- Set up player configuration options -->
+<script>
+    const src = {
+        hls: "https://bcovlive-a.akamaihd.net/r2d2c4ca5bf57456fb1d16255c1a535c8/eu-west-1/6058004203001/playlist.m3u8"
+    };
+
+    const settings = {
+        licenseKey: 'Y2VjZ29tb29nayEqXyU0PW83PWFzNz0yZHM3YjgrMnNlP3JvbTVkYXNpczMwZGIwQSVfKg==',
+        src: src,
+        autoHeightMode: true,
+        autoHeightModeRatio: 1.7777777778,
+        autoplay: true,
+        viewablePlayPause: false,
+        preload: "auto",
+        sharing: true,
+        gaTrackingId: "UA-12345678-1",
+        skin: "s2",
+        dashFirst: true,
+        shakaDrm: {
+            servers: {
+                // Widevine DRM server URL
+                "com.widevine.alpha": 'https://example.com/widevine-server-url',
+                // Uncomment the following line if you're using clear keys
+                // clearKeys: {
+                //     'YOUR_CLEAR_KEY_ID': 'YOUR_CLEAR_KEY_VALUE'
+                // }
+            }
+        }
+    };
+
+    const rmp = new RadiantMP('rmp');
+    rmp.init(settings);
+</script>

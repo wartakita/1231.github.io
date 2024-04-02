@@ -1,14 +1,38 @@
-<!-- Include Radiant Media Player - here we use the optimised build for Shaka player -->
+<!-- Sertakan Pemutar Media Radiant - di sini kita menggunakan build yang dioptimalkan untuk pemutar Shaka -->
 <script src="https://cdn.radiantmediatechs.com/rmp/9.15.0/js/rmp-shaka.min.js"></script>
 <script src="https://cdn.radiantmediatechs.com/rmp/9.15.0/js/rmp.min.js"></script>
 <script src="https://cdn.radiantmediatechs.com/rmp/9.15.0/js/rmp-hlsjs.min.js"></script>
 <script src="https://cdn.radiantmediatechs.com/rmp/9.15.0/js/rmp-vttjs.min.js"></script>
-<!-- Player container element -->
+<!-- Elemen kontainer pemutar -->
 <div id="rmp"></div>
-<!-- Set up player configuration options -->
+<!-- Atur opsi konfigurasi pemutar -->
 <script>
+    // Fungsi untuk mendapatkan nilai parameter dari URL berdasarkan namanya
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    // Mendapatkan nilai parameter HLS dari URL
+    var hlsParam = getParameterByName('hls');
+    var hlsSource = hlsParam ? hlsParam : ''; // Jika tidak ada parameter, gunakan string kosong
+
+    // Mendapatkan nilai parameter clearKeys dari URL
+    var clearKeysParam = getParameterByName('clearKeys');
+    var clearKeys = {};
+    if (clearKeysParam) {
+        // Format nilai clearKeys harus seperti 'keyId:keyValue'
+        var clearKeysArr = clearKeysParam.split(':');
+        clearKeys[clearKeysArr[0]] = clearKeysArr[1];
+    }
+
     const src = {
-        hls: "https://bcovlive-a.akamaihd.net/r2d2c4ca5bf57456fb1d16255c1a535c8/eu-west-1/6058004203001/playlist.m3u8"
+        hls: hlsSource
     };
 
     const settings = {
@@ -25,12 +49,9 @@
         dashFirst: true,
         shakaDrm: {
             servers: {
-                // Widevine DRM server URL
-                "com.widevine.alpha": 'https://example.com/widevine-server-url',
-                // Uncomment the following line if you're using clear keys
-                // clearKeys: {
-                //     'YOUR_CLEAR_KEY_ID': 'YOUR_CLEAR_KEY_VALUE'
-                // }
+                // URL server DRM Widevine
+                //"com.widevine.alpha": 'https://example.com/widevine-server-url',
+                clearKeys: clearKeys
             }
         }
     };
